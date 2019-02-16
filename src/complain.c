@@ -390,9 +390,11 @@ void
 deprecated_directive (location const *loc, char const *old, char const *upd)
 {
   if (feature_flag & feature_caret)
-    complain (loc, Wdeprecated,
-              _("deprecated directive, use %s"),
-              quote_n (1, upd));
+    {
+      complain (loc, Wdeprecated,
+                _("deprecated directive"));
+      fprintf (stderr, " %*s%s\n", loc->start.column - 1, "", upd);
+    }
   else
     complain (loc, Wdeprecated,
               _("deprecated directive: %s, use %s"),
