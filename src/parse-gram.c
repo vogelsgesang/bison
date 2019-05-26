@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 3.4.  */
+/* A Bison parser, made by GNU Bison 3.4.4-c8e57.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
@@ -48,7 +48,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.4"
+#define YYBISON_VERSION "3.4.4-c8e57"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -479,16 +479,16 @@ static const yytype_uint16 yyrline[] =
        0,   294,   294,   303,   304,   308,   309,   315,   319,   324,
      325,   330,   331,   332,   333,   334,   339,   344,   345,   346,
      347,   348,   349,   349,   350,   351,   352,   353,   354,   355,
-     356,   357,   361,   362,   371,   372,   376,   387,   391,   395,
-     403,   413,   414,   424,   425,   431,   444,   444,   449,   449,
-     454,   458,   468,   469,   470,   471,   475,   476,   481,   482,
-     486,   487,   491,   492,   493,   506,   515,   519,   523,   531,
-     532,   536,   549,   550,   562,   566,   570,   578,   580,   585,
-     592,   602,   606,   610,   618,   619,   627,   628,   634,   635,
-     636,   643,   643,   651,   652,   653,   658,   661,   663,   665,
-     667,   669,   671,   673,   675,   677,   682,   683,   692,   716,
-     717,   718,   719,   731,   733,   748,   753,   754,   759,   768,
-     769,   773,   774
+     356,   357,   361,   362,   371,   372,   376,   385,   389,   393,
+     401,   411,   412,   422,   423,   429,   442,   442,   447,   447,
+     452,   456,   466,   467,   468,   469,   473,   474,   479,   480,
+     484,   485,   489,   490,   491,   504,   513,   517,   521,   529,
+     530,   534,   547,   548,   560,   564,   568,   576,   578,   583,
+     590,   600,   604,   608,   616,   617,   625,   626,   632,   633,
+     634,   641,   641,   649,   650,   651,   656,   659,   661,   663,
+     665,   667,   669,   671,   673,   675,   680,   681,   690,   714,
+     715,   716,   717,   729,   731,   746,   751,   752,   757,   766,
+     767,   771,   772
 };
 #endif
 
@@ -2145,11 +2145,9 @@ yyreduce:
       code_props code;
       code_props_symbol_action_init (&code, (yyvsp[-1].BRACED_CODE), (yylsp[-1]));
       code_props_translate_code (&code);
-      {
-        for (symbol_list *list = (yyvsp[0].generic_symlist); list; list = list->next)
-          symbol_list_code_props_set (list, (yyvsp[-2].code_props_type), &code);
-        symbol_list_free ((yyvsp[0].generic_symlist));
-      }
+      for (symbol_list *list = (yyvsp[0].generic_symlist); list; list = list->next)
+        symbol_list_code_props_set (list, (yyvsp[-2].code_props_type), &code);
+      symbol_list_free ((yyvsp[0].generic_symlist));
     }
     break;
 
@@ -2263,10 +2261,6 @@ yyreduce:
 
   case 56:
     { (yyval.yytype_73) = NULL; }
-    break;
-
-  case 57:
-    { (yyval.yytype_73) = (yyvsp[0].TAG); }
     break;
 
   case 59:
