@@ -75,8 +75,13 @@
 #define yylex           gram_lex
 #define yyerror         gram_error
 #define yydebug         gram_debug
+#define yydebug_init    gram_debug_init
+#define yydebug_none    gram_debug_none
+#define yydebug_trace   gram_debug_trace
+#define yydebug_stats   gram_debug_stats
+#define yydebug_all     gram_debug_all
+#define yydebug_type    gram_debug_type
 #define yynerrs         gram_nerrs
-
 
 
 # ifndef YY_NULLPTR
@@ -806,7 +811,7 @@ static const yytype_uint8 yyr2[] =
 
 # define YYDPRINTF(Args)                        \
 do {                                            \
-  if (yydebug)                                  \
+  if (yydebug & yydebug_trace)                  \
     YYFPRINTF Args;                             \
 } while (0)
 
@@ -857,7 +862,7 @@ yy_location_print_ (FILE *yyo, YYLTYPE const * const yylocp)
 
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)                    \
 do {                                                                      \
-  if (yydebug)                                                            \
+  if (yydebug & yydebug_trace)                                            \
     {                                                                     \
       YYFPRINTF (stderr, "%s ", Title);                                   \
       yy_symbol_print (stderr,                                            \
@@ -1106,7 +1111,7 @@ yy_stack_print (yytype_int16 *yybottom, yytype_int16 *yytop)
 
 # define YY_STACK_PRINT(Bottom, Top)                            \
 do {                                                            \
-  if (yydebug)                                                  \
+  if (yydebug & yydebug_trace)                                  \
     yy_stack_print ((Bottom), (Top));                           \
 } while (0)
 
@@ -1137,7 +1142,7 @@ yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule
 
 # define YY_REDUCE_PRINT(Rule)          \
 do {                                    \
-  if (yydebug)                          \
+  if (yydebug & yydebug_trace)          \
     yy_reduce_print (yyssp, yyvsp, yylsp, Rule); \
 } while (0)
 
@@ -1288,7 +1293,7 @@ do {                                                             \
 do {                                                                     \
   if (yy_lac_established)                                                \
     {                                                                    \
-      if (yydebug)                                                       \
+      if (yydebug & yydebug_trace)                                       \
         YYFPRINTF (stderr, "LAC: initial context discarded due to "      \
                    Event "\n");                                          \
       yy_lac_established = 0;                                            \
@@ -1573,7 +1578,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
               }
         }
 # if GRAM_DEBUG
-      else if (yydebug)
+      else if (yydebug & yydebug_trace)
         YYFPRINTF (stderr, "No expected tokens.\n");
 # endif
     }
@@ -1775,6 +1780,15 @@ YYLTYPE yylloc = yyloc_default;
   YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
 #endif
 
+#if GRAM_DEBUG
+  typedef struct {
+    int num_reductions;
+    int num_shifts;
+  } yy_stats_t;
+  static yy_stats_t yy_stats_init;
+  yy_stats_t yy_stats = yy_stats_init;
+#endif
+
 #define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N), yylsp -= (N))
 
   /* The number of symbols on the RHS of the reduced rule.
@@ -1956,6 +1970,9 @@ yybackup:
 
   /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
+#if GRAM_DEBUG
+  yy_stats.num_shifts += 1;
+#endif
 
   /* Discard the shifted token.  */
   yychar = YYEMPTY;
@@ -2000,6 +2017,9 @@ yyreduce:
   YYLLOC_DEFAULT (yyloc, (yylsp - yylen), yylen);
   yyerror_range[1] = yyloc;
   YY_REDUCE_PRINT (yyn);
+#if GRAM_DEBUG
+  yy_stats.num_reductions += 1;
+#endif
   {
     int yychar_backup = yychar;
     switch (yyn)
@@ -2761,6 +2781,13 @@ yyreturn:
 #endif
   if (yyes != yyesa)
     YYSTACK_FREE (yyes);
+#if GRAM_DEBUG
+  if (yydebug & yydebug_stats)
+    {
+      YYFPRINTF (stderr, "num_reductions: %d\n", yy_stats.num_reductions);
+      YYFPRINTF (stderr, "num_shifts: %d\n", yy_stats.num_shifts);
+    }
+#endif
 #if YYERROR_VERBOSE
   if (yymsg != yymsgbuf)
     YYSTACK_FREE (yymsg);
