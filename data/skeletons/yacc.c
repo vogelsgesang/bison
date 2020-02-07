@@ -602,7 +602,7 @@ static const ]b4_int_type_for([b4_translate])[ yytranslate[] =
      [[YYRLINE[YYN] -- Source line where rule number YYN was defined.]])[
 #endif
 
-#if ]b4_error_verbose_if([[1]], [b4_api_PREFIX[DEBUG || ]b4_token_table_flag])[
+#if ]b4_token_table_if([[1]], [b4_api_PREFIX[DEBUG]])[
 /* The user-facing name of the symbol whose (internal) number is
    YYSYMBOL.  No bounds checking.  */
 static const char *yysymbol_name (int yysymbol) YY_ATTRIBUTE_UNUSED;
@@ -621,11 +621,7 @@ yysymbol_name (int yysymbol)
 {
   return yytname[yysymbol];
 }]],
-[[/* The user-facing name of the symbol whose (internal) number is
-   YYSYMBOL.  No bounds checking.  */
-static const char *yysymbol_name (int yysymbol) YY_ATTRIBUTE_UNUSED;
-
-static const char *
+[[static const char *
 yysymbol_name (int yysymbol)
 {
   static const char *const yy_sname[] =
